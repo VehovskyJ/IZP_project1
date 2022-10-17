@@ -6,7 +6,7 @@
 int isNumber(char str[]) {
     int len = strlen(str);
     for (int i = 0; i < len; ++i) {
-        if (!isdigit(str[i])){
+        if (!isdigit(str[i])) {
             return 0;
         }
     }
@@ -26,39 +26,26 @@ int main(int argc, char *argv[]) {
     }
 
     // Checks if the first argument is a number
-    if(!isNumber(argv[1])) {
+    if (!isNumber(argv[1])) {
         fprintf(stderr, "Search query is not a valid number\n");
         return 0;
     }
 
-    char name[101];
-    char number[101];
+    char line[101];
     char c;
-    int switcher = 0;
     int index = 0;
     while ((c = getchar()) != EOF) {
         if (index < 101) {
-            if (switcher % 2 == 1) {
-                name[index++] = c;
-            } else {
-                number[index++] = c;
-            }
+            line[index++] = c;
         } else {
-            if (switcher % 2 == 1) {
-                name[100] = '\n';
-            } else {
-                number[100] = '\n';
-            }
+            line[100] = '\n';
         }
 
         if (c == '\n') {
             // TODO: if empty replace with [empty]
-            printf("%s", name);
-            printf("%s", number);
+            printf("%s", line);
             index = 0;
-            memset(name, 0, 101);
-            memset(number, 0, 101);
-            switcher++;
+            memset(line, 0, 101);
         }
     }
 
