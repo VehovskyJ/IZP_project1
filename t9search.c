@@ -36,24 +36,44 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    char c, line[101];
-    int index = 0;
+    char c, line[203], name[101], number[101];
+    int index = 0, switcher = 0;
     while ((c = getchar()) != EOF) {
-        // TODO: join into one line
         // TODO: if number is not numbers ignore???
-        if (index < 101) {
-            line[index++] = toLowerCase(c);
+        if (switcher % 2 == 0){
+            if (index < 101) {
+                name[index++] = toLowerCase(c);
+            } else {
+                name[100] = '\n';
+            }
         } else {
-            line[100] = '\n';
+            if (index < 101) {
+                number[index++] = c;
+            } else {
+                number[100] = '\n';
+            }
         }
 
         if (c == '\n') {
-            if (strlen(line) < 2) {
-                strcpy(line, "[empty]\n");
+            if (switcher % 2 != 0){
+                if (strlen(name) < 2) {
+                    strcpy(name, "[empty]\n");
+                } else if (strlen(number) < 2) {
+                    strcpy(number, "[empty]\n");
+                }
+
+                name[strcspn(name, "\n")] = 0;
+                strcpy(line, name);
+                strcat(line, ", ");
+                strcat(line, number);
+                printf("%s", line);
+                memset(name, 0, 101);
+                memset(number, 0, 101);
+                memset(line, 0, 101);
             }
-            printf("%s", line);
             index = 0;
-            memset(line, 0, 101);
+            switcher++;
+
         }
     }
 
