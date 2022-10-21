@@ -2,7 +2,9 @@
 #include <string.h>
 #include <ctype.h>
 
-const char t9[10][5] = { "0",    "1",    "2abc",  "3def", "4ghi", "5jkl", "6mno", "7pqrs", "8tuv", "9wxyz" };
+const int LINE_SIZE = 101;
+const int CONTACT_SIZE = 203;
+const char T9[10][5] = { "0",    "1",    "2abc",  "3def", "4ghi", "5jkl", "6mno", "7pqrs", "8tuv", "9wxyz" };
 
 // Checks if string is a number
 int isNumber(char str[]) {
@@ -22,12 +24,21 @@ char toLowerCase(char x) {
     return x;
 }
 
+//int checkMatch(char contact[], char query[]) {
+//    for (int i = 0; i < (int)strlen(contact); ++i) {
+//        contact[i] = toLowerCase(contact[i]);
+//    }
+//    if (strlen(query) < 1) {
+//        return 1;
+//    }
+//
+//    return 0;
+//}
+
 int main(int argc, char *argv[]) {
     if (argc > 2) {
         fprintf(stderr, "Too many arguments\n");
         return 0;
-    } else if (argc < 2) {
-        // TODO: Print all contacts
     }
 
     // Checks if the first argument is a number
@@ -36,21 +47,21 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    char c, line[203], name[101], number[101];
+    char c, contact[CONTACT_SIZE], name[LINE_SIZE], number[LINE_SIZE];
     int index = 0, switcher = 0;
     while ((c = getchar()) != EOF) {
         // TODO: if number is not numbers ignore???
         if (switcher % 2 == 0){
-            if (index < 101) {
+            if (index < LINE_SIZE) {
                 name[index++] = toLowerCase(c);
             } else {
-                name[100] = '\n';
+                name[LINE_SIZE - 1] = '\n';
             }
         } else {
-            if (index < 101) {
+            if (index < LINE_SIZE) {
                 number[index++] = c;
             } else {
-                number[100] = '\n';
+                number[LINE_SIZE - 1] = '\n';
             }
         }
 
@@ -63,17 +74,20 @@ int main(int argc, char *argv[]) {
                 }
 
                 name[strcspn(name, "\n")] = 0;
-                strcpy(line, name);
-                strcat(line, ", ");
-                strcat(line, number);
-                printf("%s", line);
-                memset(name, 0, 101);
-                memset(number, 0, 101);
-                memset(line, 0, 101);
+                strcpy(contact, name);
+                strcat(contact, ", ");
+                strcat(contact, number);
+
+//                if (checkMatch(line, argv[1])) {
+                    printf("%s", contact);
+//                }
+
+                memset(name, 0, LINE_SIZE);
+                memset(number, 0, LINE_SIZE);
+                memset(contact, 0, CONTACT_SIZE);
             }
             index = 0;
             switcher++;
-
         }
     }
 
