@@ -4,7 +4,7 @@
 
 const int LINE_SIZE = 101;
 const int CONTACT_SIZE = 203;
-const char T9[10][5] = { "0",    "1",    "2abc",  "3def", "4ghi", "5jkl", "6mno", "7pqrs", "8tuv", "9wxyz" };
+const char dictionary[10][4] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
 // Checks if string is a number
 int isNumber(char str[]) {
@@ -24,16 +24,37 @@ char toLowerCase(char x) {
     return x;
 }
 
-//int checkMatch(char contact[], char query[]) {
-//    for (int i = 0; i < (int)strlen(contact); ++i) {
-//        contact[i] = toLowerCase(contact[i]);
-//    }
-//    if (strlen(query) < 1) {
-//        return 1;
-//    }
-//
-//    return 0;
-//}
+char charToNum(char c) {
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < (int)strlen(dictionary[i]); ++j) {
+            if (c == dictionary[i][j] && c != ' ') {
+                return i + '0';
+            }
+        }
+    }
+    return c;
+}
+
+int checkMatch(char contact[], char query[]) {
+    char temp[strlen(contact)];
+    strcpy(temp, contact);
+
+    if (strlen(query) == 0) {
+        return 1;
+    }
+
+    for (int i = 0; i < (int)strlen(temp); ++i) {
+        temp[i] = charToNum(temp[i]);
+    }
+
+    if (strstr(temp, query)) {
+        memset(temp, 0, strlen(contact));
+        return 1;
+    }
+
+    memset(temp, 0, strlen(contact));
+    return 0;
+}
 
 int main(int argc, char *argv[]) {
     if (argc > 2) {
@@ -42,7 +63,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Checks if the first argument is a number
-    if (!isNumber(argv[1])) {
+    if (argc > 1 && !isNumber(argv[1])) {
         fprintf(stderr, "Search query is not a valid number\n");
         return 0;
     }
@@ -50,7 +71,6 @@ int main(int argc, char *argv[]) {
     char c, contact[CONTACT_SIZE], name[LINE_SIZE], number[LINE_SIZE];
     int index = 0, switcher = 0;
     while ((c = getchar()) != EOF) {
-        // TODO: if number is not numbers ignore???
         if (switcher % 2 == 0){
             if (index < LINE_SIZE) {
                 name[index++] = toLowerCase(c);
@@ -78,9 +98,9 @@ int main(int argc, char *argv[]) {
                 strcat(contact, ", ");
                 strcat(contact, number);
 
-//                if (checkMatch(line, argv[1])) {
+                if (checkMatch(contact, argc > 1 ? argv[1] : "\0")) {
                     printf("%s", contact);
-//                }
+                }
 
                 memset(name, 0, LINE_SIZE);
                 memset(number, 0, LINE_SIZE);
@@ -93,3 +113,6 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
+// TODO: Comments
+// TODO: Return codes
