@@ -38,7 +38,7 @@ char charToNum(char c) {
 // checkMatch checks if contact 'contact' matches search query 'query'. Returns true or false
 int checkMatch(char contact[], char query[]) {
     // Creates temporary variable and stores value of 'contact' in it
-    char temp[strlen(contact)];
+    char temp[CONTACT_SIZE];
     strcpy(temp, contact);
 
     // If no query was provided prints out all contacts
@@ -53,11 +53,11 @@ int checkMatch(char contact[], char query[]) {
 
     // Checks for match and returns true if match is found
     if (strstr(temp, query)) {
-        memset(temp, 0, strlen(contact));
+        memset(temp, 0, CONTACT_SIZE);
         return 1;
     }
 
-    memset(temp, 0, strlen(contact));
+    memset(temp, 0, CONTACT_SIZE);
     return 0;
 }
 
