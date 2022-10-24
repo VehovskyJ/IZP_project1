@@ -73,6 +73,9 @@ int main(int argc, char *argv[]) {
     }
 
     char c, contact[CONTACT_SIZE], name[LINE_SIZE], number[LINE_SIZE];
+    memset(name, 0, LINE_SIZE);
+    memset(number, 0, LINE_SIZE);
+    memset(contact, 0, CONTACT_SIZE);
     int index = 0, switcher = 0, found = 0;
     while ((c = getchar()) != EOF) {
         if (switcher % 2 == 0){
@@ -93,7 +96,7 @@ int main(int argc, char *argv[]) {
             if (switcher % 2 != 0){
                 if (name[0] != '\n' && number[0] != '\n') {
                     name[strcspn(name, "\n")] = 0;
-                    strcpy(contact, name);
+                    strcat(contact, name);
                     strcat(contact, ", ");
                     strcat(contact, number);
 
