@@ -5,7 +5,7 @@
 
 const int LINE_SIZE = 101;      // Max length of name and number
 const int CONTACT_SIZE = 203;   // Max length of one line [name, number]
-const char dictionary[10][4] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}; // T9 dictionary
+const char dictionary[10][4] = {"+", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}; // T9 dictionary
 
 // isNumber checks if string 'str' is a number. Returns true or false
 int isNumber(char str[]) {
@@ -26,7 +26,7 @@ char toLowerCase(char x) {
 // charToNum converts character 'c' into a corresponding number from t9 dictionary
 char charToNum(char c) {
     for (int i = 0; i < 10; ++i) {
-        for (int j = 0; j < (int)strlen(dictionary[i]); ++j) {
+        for (int j = 0; j < 4; ++j) {
             if (c == dictionary[i][j] && c != ' ') {
                 return i + '0';
             }
