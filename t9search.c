@@ -72,10 +72,23 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
+    /* Variables
+     * 'c'          character obtained from getchar
+     * 'contact'    contact composed of name and number [name, number]
+     * 'name'       name form even lines
+     * 'number'     number from odd lines
+     * 'index'      index of a character in line
+     * 'oddEven'    number that determines if a line is odd or even
+     * 'found'      number of contacts matching query
+     * */
     char c, contact[CONTACT_SIZE], name[LINE_SIZE], number[LINE_SIZE];
-    int index = 0, switcher = 0, found = 0;
+    int index = 0, oddEven = 0, found = 0;
     while ((c = getchar()) != EOF) {
-        if (switcher % 2 == 0){
+        // Using 'oddEven' determines if character should be saved into 'name' or 'number'
+        // and then using 'index' removes all characters past the line length limit
+        // If the line limit is exceeded, '\n' will be copied as the last character, since natural line delimiter is cut off
+        // All characters in name are changed to lowercase
+        if (oddEven % 2 == 0){
             if (index < LINE_SIZE) {
                 name[index++] = toLowerCase(c);
             } else {
@@ -89,25 +102,31 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        // If 'c' is equal to '\n', 'index' is reset to 0 and 'oddEven' is incremented
         if (c == '\n') {
-            if (switcher % 2 != 0){
+            // When 'oddEven' returns odd number, both name and number were scanned and are now ready for further processing
+            if (oddEven % 2 != 0){
+                // If the first character in 'name' or 'number' is '\n', contact is ignored because either name or number is empty
                 if (name[0] != '\n' && number[0] != '\n') {
+                    // Removes '\n' from name and copies values from name and number into contact in format [name, number]
                     name[strcspn(name, "\n")] = 0;
                     strcpy(contact, name);
                     strcat(contact, ", ");
                     strcat(contact, number);
 
+                    // Checks if the contact matches query from first argument and if no argument was entered prints all contacts
                     if (checkMatch(contact, argc > 1 ? argv[1] : "\0")) {
                         found++;
                         printf("%s", contact);
                     }
                 }
+                // Resets variables 'name' 'number' and 'contact'
                 memset(name, 0, LINE_SIZE);
                 memset(number, 0, LINE_SIZE);
                 memset(contact, 0, CONTACT_SIZE);
             }
             index = 0;
-            switcher++;
+            oddEven++;
         }
     }
 
